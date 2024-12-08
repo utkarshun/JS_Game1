@@ -3,194 +3,293 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Guess the Number Game</title>
+    <title>Click the Color Game</title>
     <style>
       * {
         box-sizing: border-box;
-        margin: 0;
-        padding: 0;
       }
       body {
         display: flex;
         justify-content: center;
         align-items: center;
-        height: 100vh;
-        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-        background: radial-gradient(circle, #1f1c2c, #928dab);
+        min-height: 100vh;
+        margin: 0;
+        background-color: black;
         color: white;
       }
-      #gamecontainer {
+      .container {
+        position: relative;
         text-align: center;
-        padding: 30px;
-        background-color: rgba(0, 0, 0, 0.75);
-        border-radius: 15px;
-        box-shadow: 0px 8px 20px rgba(0, 0, 0, 0.5);
-        width: 100%;
-        max-width: 400px;
-        transition: transform 0.3s;
-      }
-      #gamecontainer:hover {
-        transform: scale(1.02);
-      }
-      #gamecontainer h2 {
-        font-size: 2em;
-        color: #f39c12;
-        margin-bottom: 15px;
-      }
-      #gamecontainer p {
-        margin-bottom: 10px;
-      }
-      select,
-      input[type="number"] {
-        width: 100%;
-        padding: 12px;
-        margin: 10px 0px;
+        max-width: 800px;
+        padding: 20px;
+        background-color: #2d2d2d;
         border-radius: 10px;
-        font-size: 1em;
-        background-color: #333;
-        color: #ecf0f1;
-        border: 2px solid #444;
-        text-align: center;
-        transition: border-color 0.3s ease;
+        box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.5);
       }
-      select:focus,
-      input[type="number"]:focus {
-        outline: none;
-        border-color: #3498db;
+      h1 {
+        font-size: 2.5em;
+        color: #f9ca24;
       }
-      #message {
-        font-size: 1.2rem;
-        margin-top: 15px;
-        color: #f1c40f;
-        line-height: 1.5;
-      }
-      #startGameButton {
-        display: none;
-        margin-top: 10px;
-        padding: 10px 20px;
-        border: none;
-        background-color: #3498db;
-        border-radius: 8px;
-        color: white;
-        cursor: pointer;
+      p {
         font-size: 1.2em;
-        margin: auto;
+      }
+      #gameGrid {
+        display: grid;
+        grid-template-columns: repeat(10, 1fr);
+        gap: 10px;
+        margin: 20px auto;
+        justify-content: center;
+      }
+      .cell {
+        height: 70px;
+        width: 70px;
+        cursor: pointer;
+        border-radius: 5px;
+        background-color: #f9ca24;
+        transition: background-color 0.3s;
+      }
+      .cell:hover {
+        transform: scale(1.1);
+        border: 2px solid white;
+      }
+      .overlay {
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        display: none;
+        color: #f9ca24;
+        font-size: 2em;
+        text-align: center;
+        z-index: 100;
+        animation: float 2s ease-in-out infinite;
+      }
+      .overlay-button {
+        margin-top: 20px;
+        padding: 10px 20px;
+        background-color: #ff6347;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+      }
+      @keyframes float {
+        0%,
+        100% {
+          transform: translate(-50%, -60%);
+        }
+        50% {
+          transform: translate(-50%, -40%);
+        }
       }
     </style>
   </head>
   <body>
-    <div id="gamecontainer">
-      <h2>Guess the Number</h2>
-      <p>Choose the range, then guess the number!</p>
-      <select id="range" onchange="setRange()">
-        <option value="100">1-100</option>
-        <option value="500">1-500</option>
-        <option value="1000">1-1000</option>
-      </select>
-      <input
-        type="number"
-        id="guessInput"
-        placeholder="Enter the guess"
-        min="1"
-      />
-      <div id="message"></div>
-      <button id="startGameButton" onclick="startGame()">Start Game</button>
-      <audio id="winSound" src="win.mp3"></audio>
-      <audio id="tryAgainSound" src="input_sound.mp3"></audio>
-      <audio id="gameOverSound" src="you-lose-game-sound.mp3"></audio>
+    <div class="container">
+      <h1>Click the Color Game</h1>
+      <p>Target Color: <span id="targetColor">Red</span></p>
+      <p>
+        Score: <span id="score">0</span> | Time Left:
+        <span id="timer">2:00</span>
+      </p>
+      <div id="gameGrid">
+        <!-- Cells for the game grid -->
+        <div class="cell"></div>
+        <div class="cell"></div>
+        <div class="cell"></div>
+        <div class="cell"></div>
+        <div class="cell"></div>
+        <div class="cell"></div>
+        <div class="cell"></div>
+        <div class="cell"></div>
+        <div class="cell"></div>
+        <div class="cell"></div>
+        <div class="cell"></div>
+        <div class="cell"></div>
+        <div class="cell"></div>
+        <div class="cell"></div>
+        <div class="cell"></div>
+        <div class="cell"></div>
+        <div class="cell"></div>
+        <div class="cell"></div>
+        <div class="cell"></div>
+        <div class="cell"></div>
+        <div class="cell"></div>
+        <div class="cell"></div>
+        <div class="cell"></div>
+        <div class="cell"></div>
+        <div class="cell"></div>
+        <div class="cell"></div>
+        <div class="cell"></div>
+        <div class="cell"></div>
+        <div class="cell"></div>
+        <div class="cell"></div>
+        <div class="cell"></div>
+        <div class="cell"></div>
+        <div class="cell"></div>
+        <div class="cell"></div>
+        <div class="cell"></div>
+        <div class="cell"></div>
+        <div class="cell"></div>
+        <div class="cell"></div>
+        <div class="cell"></div>
+      </div>
+      <!-- Overlays -->
+      <div id="congratsOverlay" class="overlay">
+        Congratulations! You Win!
+        <button id="restartGameOverlay" class="overlay-button">
+          Restart Game
+        </button>
+      </div>
+      <div id="loseOverlay" class="overlay lose-overlay">
+        You Lose! Time Up!
+        <button id="restartGameOverlayLose" class="overlay-button">
+          Restart Game
+        </button>
+      </div>
+      <!-- Audio -->
+      <audio id="backgroundMusic" loop>
+        <source src="background_music.mp3" type="audio/mpeg" />
+      </audio>
+      <audio id="winMusic">
+        <source src="win.mp3" type="audio/mpeg" />
+      </audio>
+      <audio id="lossMusic">
+        <source src="you-lose-game-sound.mp3" type="audio/mpeg" />
+      </audio>
+      <audio id="correctMusic">
+        <source src="correct.mp3" type="audio/mpeg" />
+      </audio>
+      <audio id="incorrectMusic">
+        <source src="wrong-answer.mp3" type="audio/mpeg" />
+      </audio>
     </div>
-
     <script>
-      let randomNumber, maxRange, attempts, maxAttempts;
+      const colorNames = [
+        "Red",
+        "Green",
+        "Blue",
+        "Yellow",
+        "Purple",
+        "Cyan",
+        "Magenta",
+        "Orange",
+        "Pink",
+        "Brown",
+        "Lime",
+        "Olive",
+        "Teal",
+        "Navy",
+        "Maroon",
+        "Silver",
+      ];
+      let winningScore = 3;
+      let targetColor = "";
+      let score = 0;
+      let timer = 120;
+      let gameinterval, timeinterval;
 
-      let message = document.getElementById("message");
-      let startGameButton = document.getElementById("startGameButton");
-      const winSound = document.getElementById("winSound");
-      const tryAgainSound = document.getElementById("tryAgainSound");
-      const gameOverSound = document.getElementById("gameOverSound");
-
-      let showMessage = (text, success) => {
-        message.textContent = text;
+      const formatTime = (seconds) => {
+        const minutes = Math.floor(seconds / 60);
+        const secs = seconds % 60;
+        return `${minutes}:${secs < 10 ? "0" : ""}${secs}`;
       };
 
-      let setRange = () => {
-        maxRange = parseInt(document.getElementById("range").value);
-        randomNumber = Math.floor(Math.random() * maxRange) + 1;
-        maxAttempts = Math.ceil(Math.log2(maxRange)) + 3;
-        attempts = 0;
-        showMessage(
-          `Guess a number between 1 and ${maxRange}. You have ${maxAttempts} attempts left`,
-          true
-        );
-        startGameButton.style.display = "none";
+      const setRandomColor = () => {
+        const cells = document.querySelectorAll(".cell");
+        let targetAssigned = false;
+        cells.forEach((cell) => {
+          const randomIndex = Math.floor(Math.random() * colorNames.length);
+          const randomColor = colorNames[randomIndex];
+          cell.style.backgroundColor = randomColor;
+          cell.setAttribute("data-color", randomColor);
+          if (!targetAssigned && randomColor === targetColor) {
+            targetAssigned = true;
+          }
+        });
+        if (!targetAssigned) {
+          const randomCell = cells[Math.floor(Math.random() * cells.length)];
+          randomCell.style.backgroundColor = targetColor;
+          randomCell.setAttribute("data-color", targetColor);
+        }
       };
 
-      let makeGuess = () => {
-        if (!maxAttempts || !maxRange) {
-          showMessage(`Please start the game first!`, false);
-          return;
+      const setTargetColor = () => {
+        const randomIndex = Math.floor(Math.random() * colorNames.length);
+        targetColor = colorNames[randomIndex];
+        document.getElementById("targetColor").textContent = targetColor;
+      };
+
+      const updateTimer = () => {
+        timer--;
+        document.getElementById("timer").textContent = formatTime(timer);
+        if (timer <= 0) {
+          endGame(false);
         }
-        const guess = parseInt(document.getElementById("guessInput").value);
-        attempts++;
-        if (isNaN(guess) || guess < 1 || guess > maxRange) {
-          showMessage(
-            `Please enter a valid number between 1 and ${maxRange}. Attempts left: ${
-              maxAttempts - attempts
-            }`,
-            false
-          );
-          return;
-        }
-        if (attempts > maxAttempts) {
-          gameOverSound.play();
-          showMessage(
-            `Game Over | You lost, you've used all ${maxAttempts} attempts. The number was ${randomNumber}`,
-            false
-          );
-          startGameButton.style.display = "block";
-          return;
-        }
-        if (guess === randomNumber) {
-          winSound.play();
-          showMessage(
-            `💥 You guessed it! You win! The number was ${randomNumber}. You used ${attempts} attempts`,
-            true
-          );
-          startGameButton.style.display = "block";
-          return;
-        } else if (guess < randomNumber) {
-          tryAgainSound.play();
-          showMessage(
-            `👇 Too low! Attempts left: ${maxAttempts - attempts}`,
-            false
-          );
+      };
+
+      const initializeGame = () => {
+        score = 0;
+        timer = 120;
+        document.getElementById("score").textContent = score;
+        document.getElementById("timer").textContent = formatTime(timer);
+        document.getElementById("congratsOverlay").style.display = "none";
+        document.getElementById("loseOverlay").style.display = "none";
+        setRandomColor();
+        setTargetColor();
+        const bgm = document.getElementById("backgroundMusic");
+        bgm.currentTime = 0;
+        bgm.play().catch(() => console.log("Autoplay issue handled."));
+        clearInterval(gameinterval);
+        clearInterval(timeinterval);
+        gameinterval = setInterval(setRandomColor, 1000);
+        timeinterval = setInterval(updateTimer, 1000);
+      };
+
+      const endGame = (isWin) => {
+        clearInterval(gameinterval);
+        clearInterval(timeinterval);
+        document.getElementById("backgroundMusic").pause();
+        const overlay = isWin
+          ? document.getElementById("congratsOverlay")
+          : document.getElementById("loseOverlay");
+        overlay.style.display = "block";
+        const music = isWin
+          ? document.getElementById("winMusic")
+          : document.getElementById("lossMusic");
+        music.play();
+      };
+
+      const handleClick = (e) => {
+        const clickedColor = e.target.getAttribute("data-color");
+        if (clickedColor === targetColor) {
+          score++;
+          document.getElementById("score").textContent = score;
+          document.getElementById("correctMusic").play();
+          if (score === winningScore) {
+            endGame(true);
+          } else {
+            setRandomColor();
+            setTargetColor();
+          }
         } else {
-          tryAgainSound.play();
-          showMessage(
-            `👇 Too high! Attempts left: ${maxAttempts - attempts}`,
-            false
-          );
-        }
-        if (attempts === maxAttempts && guess !== randomNumber) {
-          gameOverSound.play();
-          showMessage(
-            `Game over! You have used all ${maxAttempts} attempts. The number was ${randomNumber}`,
-            false
-          );
+          document.getElementById("incorrectMusic").play();
         }
       };
 
-      let startGame = () => {
-        setRange();
-        document.getElementById("guessInput").value = "";
-      };
-
-      document.getElementById("guessInput").addEventListener("keydown", (e) => {
-        if (e.key === "Enter") {
-          makeGuess();
-          document.getElementById("guessInput").value = "";
-        }
+      document.querySelectorAll(".cell").forEach((cell) => {
+        cell.addEventListener("click", handleClick);
       });
+
+      document
+        .getElementById("restartGameOverlay")
+        .addEventListener("click", initializeGame);
+      document
+        .getElementById("restartGameOverlayLose")
+        .addEventListener("click", initializeGame);
+
+      initializeGame();
     </script>
   </body>
 </html>
+
